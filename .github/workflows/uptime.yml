@@ -1,0 +1,38 @@
+# Checks hylink.org and api.hylink.org from outside every five minutes and tells
+# Discord when either stops answering. It runs here, not on the server, so it
+# also notices when the whole server is gone.
+name: Uptime
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      # The previous run's state (up or down, since when, last message).
+      - uses: actions/cache/restore@v4
+        with:
+          path: state.json
+          key: uptime-state-${{ github.run_id }}
+          restore-keys: uptime-state-
+      - run: python3 check.py
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      - uses: actions/cache/save@v4
+        if: always()
+        continue-on-error: true  # a re-run has the same key
+        with:
+          path: state.json
+          key: uptime-state-${{ github.run_id }}

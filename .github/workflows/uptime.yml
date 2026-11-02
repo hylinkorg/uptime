@@ -1,11 +1,9 @@
-# Checks hylink.org and api.hylink.org from outside every five minutes and tells
-# Discord when either stops answering. It runs here, not on the server, so it
-# also notices when the whole server is gone.
+# The old outside check, now only run by hand (Actions, "Run workflow"). The
+# scheduled check is the Cloudflare Worker in worker/: GitHub ran this schedule
+# only every few hours at times, and drops queued runs under load.
 name: Uptime
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 permissions:

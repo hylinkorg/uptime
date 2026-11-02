@@ -1,0 +1,19 @@
+# The outside check, as a Cloudflare Worker run every minute (README.md, "Setting it up").
+name = "hylink-uptime"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+# No public address: it only runs on its schedule.
+workers_dev = false
+preview_urls = false
+
+[triggers]
+crons = ["* * * * *"]
+
+# Up, or failing/down since when. Written only on a change.
+[[kv_namespaces]]
+binding = "STATE"
+id = "REPLACE_WITH_THE_NAMESPACE_ID"
+
+# Each run's one log line (what was down, the state, whether it sent) in the dashboard.
+[observability]
+enabled = true

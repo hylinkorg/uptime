@@ -12,7 +12,7 @@ crons = ["* * * * *"]
 # Up, or failing/down since when. Written only on a change.
 [[kv_namespaces]]
 binding = "STATE"
-id = "REPLACE_WITH_THE_NAMESPACE_ID"
+id = "c601d461f81b42ce96efc1ba4aa7bd57"
 
 # Each run's one log line (what was down, the state, whether it sent) in the dashboard.
 [observability]
